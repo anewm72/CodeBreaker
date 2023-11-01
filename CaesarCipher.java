@@ -1,31 +1,43 @@
-import java.util.*;
-import java.io.*;
+/**
+ * CaesarCipher: subclass of Cipher
+ * @author Abby Newman
+ * @version 1.2 24/05/23
+ */
+public class CaesarCipher extends Cipher {
 
-public class CaesarCipher extends Cipher{
     public CaesarCipher(int cipherChoice) {
         super(cipherChoice);
-        String encryptedText = "";
     }
 
-    public void encrypt(int key) {
-        File file = new File("prep.txt");
-        Scanner scan;
-        try {
-            scan = new Scanner(file);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        int i = 0;
-        while (scan.hasNextLine() == false) {
-            String input = scan.nextLine();
-            for (i=0; i<input.length(); i++){
-                char[] inputChars = input.toCharArray();
-                int encodingValue = inputChars[i];
+    /**
+     * Encrypt method
+     * Gets the integer value of the key for the shift
+     * Calls the superclass method
+     * @param key the key used for this cipher
+     * @param shift number for the plain text characters to be shifted by
+     */
+    @Override public void encrypt(String key, int shift) {
+        shift = Integer.valueOf(key);
 
-                char shiftedChar = 0;
-                inputChars[i] = shiftedChar;
-                input = String.valueOf(inputChars);
-            }
+
+        super.setAlphabet(alphabet);
+        super.encrypt(key, shift);
+    }
+
+    /**
+     * Decrypt method
+     * Gets the integer value of the key for the shift
+     * Calls the superclass method
+     * @param key the key used for this cipher
+     * @param shift the number for the cipher to be shifted by
+     */
+    @Override public void decrypt(String key, int shift) {
+        if (getCipherFile() == "") {
+            System.out.println("Please choose a cipher text file first.");
+        } else {
+            shift = Integer.valueOf(key);
+            super.setAlphabet(alphabet);
+            super.decrypt(key, shift);
         }
     }
 }
